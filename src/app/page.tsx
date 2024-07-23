@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [strengths, setStrengths] = useState("");
-  const [opportunities, setOpportunities] = useState("");
-  const [weaknesses, setWeaknesses] = useState("");
-  const [threats, setThreats] = useState("");
+  const [strengths, setStrengths] = useState<string>();
+  const [opportunities, setOpportunities] = useState<string>();
+  const [weaknesses, setWeaknesses] = useState<string>();
+  const [threats, setThreats] = useState<string>();
   const [percentual, setPercentual] = useState(0);
 
   const getBgColor = () => {
@@ -34,7 +34,9 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const sum = (array: string[]) => {
+    const sum = (array: string[]|null|undefined) => {
+      if (!array) return 0;
+
       let sum = 0;
       for (let i = 0; i < array.length; i++) {
         const split = array[i].split("/");
@@ -47,13 +49,17 @@ export default function Home() {
 
       return sum;
     }
-    const splitStrengths = strengths.split("\n");
-    const splitOpportunities = opportunities.split("\n");
-    const splitWeaknesses = weaknesses.split("\n");
-    const splitThreats = threats.split("\n");
+    const splitStrengths = strengths?.split("\n");
+    const splitOpportunities = opportunities?.split("\n");
+    const splitWeaknesses = weaknesses?.split("\n");
+    const splitThreats = threats?.split("\n");
+
+    console.log("dkslçdksa");
 
     let sumPositive = sum(splitStrengths) + sum(splitOpportunities);
     let sumNegative = sum(splitWeaknesses) + sum(splitThreats);
+
+    console.log({sumPositive, sumNegative})
 
     setPercentual((sumPositive / (sumPositive + sumNegative)) * 100);
   }, [strengths, opportunities, weaknesses, threats]);
