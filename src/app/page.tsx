@@ -89,19 +89,19 @@ export default function Home() {
       <p className="text-center mb-4 font-light">"Exemplo de afirmação qualquer/3"</p>
       <main className="grid grid-cols-2">
         <div className="h-[400px]">
-          <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Coisas boas</span></label>
+          <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
           <textarea id="strengths" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setStrengths(e.target.value)}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Coisas ruins</span></label>
+          <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
           <textarea id="weaknesses" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setWeaknesses(e.target.value)}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Opportunities <span className="text-xs">O que você poderá aproveitar</span></label>
+          <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
           <textarea id="opportunities" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setOpportunities(e.target.value)}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Com o que você terá de lidar</span></label>
+          <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
           <textarea id="threats" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setThreats(e.target.value)}></textarea>
         </div>
       </main>
