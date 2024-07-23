@@ -7,7 +7,7 @@ export default function Home() {
   const [opportunities, setOpportunities] = useState("");
   const [weaknesses, setWeaknesses] = useState("");
   const [threats, setThreats] = useState("");
-  const [percentual, setPercentual] = useState(50);
+  const [percentual, setPercentual] = useState(0);
 
   const getBgColor = () => {
     if (percentual < 25) {
@@ -34,16 +34,28 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const sizeStrengths = strengths.split("\n").length;
-    const sizeOpportunities = opportunities.split("\n").length;
-    const sizeWeaknesses = weaknesses.split("\n").length;
-    const sizeThreats = threats.split("\n").length;
+    const sum = (array: string[]) => {
+      let sum = 0;
+      for (let i = 0; i < array.length; i++) {
+        const split = array[i].split("/");
+        if (!split[1]) {
+          sum += 1;
+        } else {
+          sum += Number(split[1].trim());
+        }
+      }
 
-    console.log({sizeStrengths, sizeOpportunities, sizeWeaknesses, sizeThreats})
+      return sum;
+    }
+    const splitStrengths = strengths.split("\n");
+    const splitOpportunities = opportunities.split("\n");
+    const splitWeaknesses = weaknesses.split("\n");
+    const splitThreats = threats.split("\n");
 
-    setPercentual(((sizeStrengths + (sizeOpportunities * 0.75)) / (sizeStrengths + (sizeOpportunities * 0.75) + sizeWeaknesses + (sizeThreats * 0.75))) * 100);
+    let sumPositive = sum(splitStrengths) + sum(splitOpportunities);
+    let sumNegative = sum(splitWeaknesses) + sum(splitThreats);
 
-
+    setPercentual((sumPositive / (sumPositive + sumNegative)) * 100);
   }, [strengths, opportunities, weaknesses, threats]);
 
   return (
@@ -67,6 +79,8 @@ export default function Home() {
           />
         </div>
       </div>
+      <p className="text-center mt-4 mb-2 font-bold">Você deve inserir as afirmações linha por linha. A quebra de linha é o que permite a contagem. Além disso, você pode definir pesos para cada afirmação, da seguinte forma:</p>
+      <p className="text-center mb-4 font-light">"Exemplo de afirmação qualquer/3"</p>
       <main className="grid grid-cols-2">
         <div className="h-[400px]">
           <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Coisas boas</span></label>
