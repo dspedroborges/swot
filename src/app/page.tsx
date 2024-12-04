@@ -1,13 +1,42 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Gloria_Hallelujah } from "next/font/google";
+import { BsClipboard2, BsClipboard2Check } from "react-icons/bs";
+
+const gloriaHallelujah = Gloria_Hallelujah({ weight: ["400"], subsets: ["latin"] });
 
 export default function Home() {
-  const [strengths, setStrengths] = useState<string>();
-  const [opportunities, setOpportunities] = useState<string>();
-  const [weaknesses, setWeaknesses] = useState<string>();
-  const [threats, setThreats] = useState<string>();
+  const searchParams = useSearchParams();
+  let title = searchParams.get("title");
+  let _strengths = searchParams.get("strengths");
+  let _opportunities = searchParams.get("opportunities");
+  let _weaknesses = searchParams.get("weaknesses");
+  let _threats = searchParams.get("threats");
+  const router = useRouter();
+  const [addedClipboard, setAddedClipboard] = useState(false);
+  const [strengths, setStrengths] = useState<string[]>([]);
+  const [opportunities, setOpportunities] = useState<string[]>([]);
+  const [weaknesses, setWeaknesses] = useState<string[]>([]);
+  const [threats, setThreats] = useState<string[]>([]);
   const [percentual, setPercentual] = useState(0);
+  const [currentTitle, setCurrentTitle] = useState(title || "Change the title")
+
+  const addToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+  }
+
+  useEffect(() => {
+    if (_strengths) setStrengths(_strengths.split(";"));
+    if (_opportunities) setOpportunities(_opportunities.split(";"));
+    if (_weaknesses) setWeaknesses(_weaknesses.split(";"));
+    if (_threats) setThreats(_threats.split(";"));
+  }, [_strengths, _opportunities, _weaknesses, _threats]);
+
+  useEffect(() => {
+    router.push(`?title=${currentTitle}&strengths=${strengths.join(";")}&opportunities=${opportunities.join(";")}&weaknesses=${weaknesses.join(";")}&threats=${threats.join(";")}`);
+  }, [strengths, opportunities, weaknesses, threats, currentTitle]);
 
   const getBgColor = () => {
     if (percentual < 25) {
@@ -34,7 +63,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const sum = (array: string[]|null|undefined) => {
+    const sum = (array: string[] | null | undefined) => {
       if (!array) return 0;
 
       let sum = 0;
@@ -49,23 +78,16 @@ export default function Home() {
 
       return sum;
     }
-    const splitStrengths = strengths?.split("\n");
-    const splitOpportunities = opportunities?.split("\n");
-    const splitWeaknesses = weaknesses?.split("\n");
-    const splitThreats = threats?.split("\n");
 
-    console.log("dkslçdksa");
-
-    let sumPositive = sum(splitStrengths) + sum(splitOpportunities);
-    let sumNegative = sum(splitWeaknesses) + sum(splitThreats);
-
-    console.log({sumPositive, sumNegative})
+    let sumPositive = sum(strengths) + sum(opportunities);
+    let sumNegative = sum(weaknesses) + sum(threats);
 
     setPercentual((sumPositive / (sumPositive + sumNegative)) * 100);
   }, [strengths, opportunities, weaknesses, threats]);
 
   return (
     <>
+      <input type="text" className={`bg-transparent text-blue-800 block mx-auto text-center rounded-xl text-2xl lg:text-6xl ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
       <div className="p-2">
         <div className="flex justify-between mb-1">
           <span className="text-base font-medium text-gray-700">
@@ -90,21 +112,36 @@ export default function Home() {
       <main className="grid grid-cols-2">
         <div className="h-[400px]">
           <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
-          <textarea id="strengths" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setStrengths(e.target.value)}></textarea>
+          <textarea id="strengths" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
-          <textarea id="weaknesses" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setWeaknesses(e.target.value)}></textarea>
+          <textarea id="weaknesses" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
-          <textarea id="opportunities" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setOpportunities(e.target.value)}></textarea>
+          <textarea id="opportunities" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
-          <textarea id="threats" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" onChange={(e) => setThreats(e.target.value)}></textarea>
+          <textarea id="threats" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
         </div>
       </main>
+
+      {
+        addedClipboard ? (
+          <BsClipboard2Check title="URL copied to clipboard" className="bg-white p-2 rounded-xl fixed bottom-2 right-2 text-green-800 text-6xl hover:scale-95 cursor-pointer" />
+        ) : (
+          <BsClipboard2 title="Copy URL to clipboard" className="bg-white p-2 rounded-xl fixed bottom-2 right-2 text-blue-800 text-6xl hover:scale-95 cursor-pointer" onClick={() => {
+            setAddedClipboard(true);
+            addToClipboard();
+            setTimeout(() => {
+              setAddedClipboard(false)
+            }, 2000);
+          }} />
+        )
+      }
+
     </>
   );
 }
