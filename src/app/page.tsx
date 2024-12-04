@@ -1,13 +1,21 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Gloria_Hallelujah } from "next/font/google";
 import { BsClipboard2, BsClipboard2Check } from "react-icons/bs";
 
 const gloriaHallelujah = Gloria_Hallelujah({ weight: ["400"], subsets: ["latin"] });
 
 export default function Home() {
+  return (
+    <Suspense>
+      <Page/>
+    </Suspense>
+  )
+}
+
+function Page() {
   const searchParams = useSearchParams();
   let title = searchParams.get("title");
   let _strengths = searchParams.get("strengths");
