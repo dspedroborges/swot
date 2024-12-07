@@ -20,13 +20,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        <nav className="py-4 flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 bg-blue-800">
-          <h1 className="text-white font-bold text-2xl w-full text-center flex items-center gap-2 justify-center"><BiBrain/> SWOT Análise</h1>
-        </nav>
         {children}
-        <footer className="flex items-center justify-center bg-blue-800 py-16">
-          <Link href="https://github.com/dspedroborges" target="_blank" className="hover:underline text-white flex items-center gap-2"><BsGithub/> dspedroborges</Link>
-        </footer>
       </body>
     </html>
   );
