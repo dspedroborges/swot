@@ -3,14 +3,14 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Gloria_Hallelujah } from "next/font/google";
-import { BsClipboard2, BsClipboard2Check } from "react-icons/bs";
+import { BsClipboard2, BsClipboard2Check, BsQuestionCircle } from "react-icons/bs";
 
 const gloriaHallelujah = Gloria_Hallelujah({ weight: ["400"], subsets: ["latin"] });
 
 export default function Home() {
   return (
     <Suspense>
-      <Page/>
+      <Page />
     </Suspense>
   )
 }
@@ -30,9 +30,12 @@ function Page() {
   const [threats, setThreats] = useState<string[]>([]);
   const [percentual, setPercentual] = useState(0);
   const [currentTitle, setCurrentTitle] = useState(title || "Mude o título")
+  const [showHelp, setShowHelp] = useState(false);
 
   const addToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
+    let change = `?title=${currentTitle}&strengths=${strengths.join(";")}&opportunities=${opportunities.join(";")}&weaknesses=${weaknesses.join(";")}&threats=${threats.join(";")}`;
+    router.push(change);
+    navigator.clipboard.writeText(window.location.origin + "/" + change);
   }
 
   useEffect(() => {
@@ -41,10 +44,6 @@ function Page() {
     if (_weaknesses) setWeaknesses(_weaknesses.split(";"));
     if (_threats) setThreats(_threats.split(";"));
   }, [_strengths, _opportunities, _weaknesses, _threats]);
-
-  useEffect(() => {
-    router.push(`?title=${currentTitle}&strengths=${strengths.join(";")}&opportunities=${opportunities.join(";")}&weaknesses=${weaknesses.join(";")}&threats=${threats.join(";")}`);
-  }, [strengths, opportunities, weaknesses, threats, currentTitle]);
 
   const getBgColor = () => {
     if (percentual < 25) {
@@ -90,22 +89,24 @@ function Page() {
     let sumPositive = sum(strengths) + sum(opportunities);
     let sumNegative = sum(weaknesses) + sum(threats);
 
-    setPercentual((sumPositive / (sumPositive + sumNegative)) * 100);
+    const perc = (sumPositive / (sumPositive + sumNegative)) * 100;
+    setPercentual(isNaN(perc) ? 0 : perc);
   }, [strengths, opportunities, weaknesses, threats]);
 
   return (
     <>
-      <input type="text" className={`bg-transparent text-blue-800 block mx-auto text-center rounded-xl text-2xl lg:text-6xl ${gloriaHallelujah.className}`} value={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
+      <BsQuestionCircle className="text-black fixed bottom-2 left-2 text-4xl hover:scale-90 cursor-pointer" onMouseEnter={() => setShowHelp(true)} onMouseLeave={() => setShowHelp(false)} />
+      <input type="text" className={`bg-transparent text-white block mx-auto text-center rounded-xl text-2xl lg:text-4xl mt-8 ${gloriaHallelujah.className}`} defaultValue={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
       <div className="p-2">
         <div className="flex justify-between mb-1">
-          <span className="text-base font-medium text-gray-700">
+          <span className="text-base font-medium text-white">
             {getQualityAndDecision()[0]}/{getQualityAndDecision()[1]}
           </span>
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-white">
             {percentual.toFixed(2)}%
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="w-full bg-gradient-to-r from-gray-600 to-gray-800 brightness-150 animate-pulse outline-4 outline-white rounded-full h-2.5">
           <div
             className="h-2.5 rounded-full"
             style={{
@@ -115,32 +116,38 @@ function Page() {
           />
         </div>
       </div>
-      <p className="text-center mt-4 mb-2 font-bold">Você deve inserir as afirmações linha por linha. A quebra de linha é o que permite a contagem. Além disso, você pode definir pesos para cada afirmação, da seguinte forma:</p>
-      <p className="text-center mb-4 font-light">"Exemplo de afirmação qualquer/3"</p>
+      {
+        showHelp && (
+          <div className="bg-gray-950 text-white p-2 rounded-xl fixed bottom-2 left-1/2 -translate-x-1/2 border">
+            <p className="text-center mt-4 mb-2 font-bold">Você deve inserir as afirmações linha por linha. A quebra de linha é o que permite a contagem. Além disso, você pode definir pesos para cada afirmação, da seguinte forma:</p>
+            <p className="text-center mb-4 font-light">"Exemplo de afirmação qualquer/3"</p>
+          </div>
+        )
+      }
       <main className="grid grid-cols-2">
         <div className="h-[400px]">
           <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
-          <textarea id="strengths" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
+          <textarea id="strengths" className="bg-green-50 hover:bg-green-100 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
-          <textarea id="weaknesses" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
+          <textarea id="weaknesses" className="bg-red-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
-          <textarea id="opportunities" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
+          <textarea id="opportunities" className="bg-green-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
-          <textarea id="threats" className="hover:bg-gray-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" value={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
+          <textarea id="threats" className="bg-red-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
         </div>
       </main>
 
       {
         addedClipboard ? (
-          <BsClipboard2Check title="URL copied to clipboard" className="bg-white p-2 rounded-xl fixed bottom-2 right-2 text-green-800 text-6xl hover:scale-95 cursor-pointer" />
+          <BsClipboard2Check title="URL copied to clipboard" className="bg-black p-2 rounded-xl fixed bottom-2 right-2 text-green-800 text-6xl hover:scale-95 cursor-pointer" />
         ) : (
-          <BsClipboard2 title="Copy URL to clipboard" className="bg-white p-2 rounded-xl fixed bottom-2 right-2 text-blue-800 text-6xl hover:scale-95 cursor-pointer" onClick={() => {
+          <BsClipboard2 title="Copy URL to clipboard" className="bg-black p-2 rounded-xl fixed bottom-2 right-2 text-white text-6xl hover:scale-95 cursor-pointer" onClick={() => {
             setAddedClipboard(true);
             addToClipboard();
             setTimeout(() => {
