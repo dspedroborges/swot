@@ -96,7 +96,7 @@ function Page() {
   return (
     <>
       <BsQuestionCircle className="text-black fixed bottom-2 left-2 text-4xl hover:scale-90 cursor-pointer" onMouseEnter={() => setShowHelp(true)} onMouseLeave={() => setShowHelp(false)} />
-      <input type="text" className={`bg-transparent text-white block mx-auto text-center rounded-xl text-2xl lg:text-4xl mt-8 ${gloriaHallelujah.className}`} defaultValue={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
+      <input type="text" className={`bg-transparent text-white block mx-auto text-center rounded-xl text-2xl lg:text-6xl mt-8 ${gloriaHallelujah.className}`} defaultValue={currentTitle} onChange={(e) => setCurrentTitle(e.target.value)} />
       <div className="p-2">
         <div className="flex justify-between mb-1">
           <span className="text-base font-medium text-white">
@@ -126,19 +126,19 @@ function Page() {
       }
       <main className="grid grid-cols-1 lg:grid-cols-2">
         <div className="h-[400px]">
-          <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
+          <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-950 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
           <textarea id="strengths" className="bg-green-100 hover:bg-green-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
+          <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-950 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
           <textarea id="weaknesses" className="bg-red-100 hover:bg-red-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
+          <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-950 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
           <textarea id="opportunities" className="bg-green-100 hover:bg-green-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
-          <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
+          <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-950 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
           <textarea id="threats" className="bg-red-100 hover:bg-red-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
         </div>
       </main>
