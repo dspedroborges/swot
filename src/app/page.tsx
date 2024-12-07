@@ -29,7 +29,7 @@ function Page() {
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
   const [threats, setThreats] = useState<string[]>([]);
   const [percentual, setPercentual] = useState(0);
-  const [currentTitle, setCurrentTitle] = useState(title || "Change the title")
+  const [currentTitle, setCurrentTitle] = useState(title || "Mude o título")
 
   const addToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
