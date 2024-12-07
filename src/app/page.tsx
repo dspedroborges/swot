@@ -124,28 +124,28 @@ function Page() {
           </div>
         )
       }
-      <main className="grid grid-cols-2">
+      <main className="grid grid-cols-1 lg:grid-cols-2">
         <div className="h-[400px]">
           <label htmlFor="strengths" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Strengths <span className="text-xs">Características internas e positivas (no que a coisa analisada é boa ou quais os benefícios)</span></label>
-          <textarea id="strengths" className="bg-green-50 hover:bg-green-100 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
+          <textarea id="strengths" className="bg-green-100 hover:bg-green-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={strengths.join("\n")} onChange={(e) => setStrengths(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="weaknesses" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Weaknesses <span className="text-xs">Características internas e negativas (no que a coisa analisada precisa melhorar ou quais as limitações e dificuldades)</span></label>
-          <textarea id="weaknesses" className="bg-red-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
+          <textarea id="weaknesses" className="bg-red-100 hover:bg-red-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={weaknesses.join("\n")} onChange={(e) => setWeaknesses(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="opportunities" className="cursor-pointer h-[20%] bg-green-900 hover:bg-green-800 text-white py-1 flex flex-col items-center justify-center text-center">Fatores externos e positivos <span className="text-xs">Fatores externos e positivos (o que você pode aproveitar)</span></label>
-          <textarea id="opportunities" className="bg-green-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
+          <textarea id="opportunities" className="bg-green-100 hover:bg-green-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={opportunities.join("\n")} onChange={(e) => setOpportunities(e.target.value.split("\n"))}></textarea>
         </div>
         <div className="h-[400px]">
           <label htmlFor="threats" className="cursor-pointer h-[20%] bg-red-900 hover:bg-red-800 text-white py-1 flex flex-col items-center justify-center text-center">Threats <span className="text-xs">Fatores externos e negativos (com o que você terá de lidar ou riscos e desafios)</span></label>
-          <textarea id="threats" className="bg-red-50 w-full h-[80%] focus:outline-none border-[1px] border-gray-50 p-2" defaultValue={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
+          <textarea id="threats" className="bg-red-100 hover:bg-red-200 w-full h-[80%] focus:outline-none border-gray-50 p-2" defaultValue={threats.join("\n")} onChange={(e) => setThreats(e.target.value.split("\n"))}></textarea>
         </div>
       </main>
 
       {
         addedClipboard ? (
-          <BsClipboard2Check title="URL copied to clipboard" className="bg-black p-2 rounded-xl fixed bottom-2 right-2 text-green-800 text-6xl hover:scale-95 cursor-pointer" />
+          <BsClipboard2Check title="URL copied to clipboard" className="bg-black p-2 rounded-xl fixed bottom-2 right-2 text-green-100 animate-bounce text-6xl hover:scale-95 cursor-pointer" />
         ) : (
           <BsClipboard2 title="Copy URL to clipboard" className="bg-black p-2 rounded-xl fixed bottom-2 right-2 text-white text-6xl hover:scale-95 cursor-pointer" onClick={() => {
             setAddedClipboard(true);
